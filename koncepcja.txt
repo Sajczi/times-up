@@ -1,0 +1,18 @@
+GameStartActivity.java - ekran g³owny, do wystartowania rozgrywki
+RoundStartActivity.java - ekran startowania rundy - w kontruktorze przyjmuje informacje która to runda
+TurnStartActivity.java - ekran startowania tury - w konstruktorze przyjmuje informacje która dru¿yna teraz gra
+TurnActivity.java - tutaj odbywa sie rozgrywka - wyœwietlanie hase³ i zgadywanie ich, stopwatch
+TurnSummaryActivity.java - ekran z tabelk¹ wyœwietlaj¹c¹ jakie has³a by³y w tej turze, do zaznaczenia które dobre które z³e. Po zamkniêciu tego ekranu trzeba zupdatowaæ score rundy i pozosta³e karty
+RoundSummaryActivity.java - ekran z podsumowaniem wyników konkretnej rundy
+
+przejœcia miêdzy ekranami opisane na diagramie
+ekrany robimy reu¿ywalne, ich zachowania zale¿ne od przekazanych enumów
+
+problemy:
+1) nie znalazlem póki co prostego sposobu ¿eby opakowaæ to w MVC - przekazujemy stan gry pomiêdzy otwarciem kolejnych ekranów
+2) serializacja modelu przy przekazaniu miêdzy ekranami - mechanika Game extends Parcelable - coœ siê nie przekazuje tak jak powinno
+3) cardDraw - koncept taki, ¿e przy starcie gry uruchamiamy metode z utila CardDrawer - niech siêga do pliku tekstowego, zbudowanego w formie:
+has³o1;u¿ycia1
+has³o2;u¿ycia2
+gdzie u¿yciaX to informacja ile razy has³o ju¿ by³o u¿yte w grach - ¿eby jak najrzadziej u¿ywaæ tych samych
+4) GUI - no to wiadomka póki co na odjeb sie byle klikaæ
