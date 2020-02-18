@@ -22,42 +22,37 @@ import java.util.List;
 
 public class RoundStartActivity extends BaseActivity {
 
-    private Game game;
     private Button startRoundButton;
     private TextView roundNumberText;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_round_start);
-        game = getGameState();
-        addListenerOnButton();
-        renderScreen(game);
+    protected int getLayoutId() {
+        return R.layout.activity_round_start;
     }
 
-    public void addListenerOnButton() {
-        startRoundButton = (Button) findViewById(R.id.startRoundButton);
-        startRoundButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                startTurn();
-            }
-        });
-    }
-
-    private void renderScreen(Game game) {
+    @Override
+    protected void prepareView(Game game){
         roundNumberText = (TextView) findViewById(R.id.roundNameTextView);
         roundNumberText.setText(game.getRound().getRoundNumber().getText());
     }
 
-    private void startTurn() {
-        Intent intent = new Intent(this, TurnStartActivity.class);
+    @Override
+    protected void addListenerOnButton() {
+        startRoundButton = (Button) findViewById(R.id.startRoundButton);
+        startRoundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                switchActivity(TurnStartActivity.class);
+            }
+        });
+    }
+
+    @Override
+    protected void changeGameState(Game game) {
         Turn turn = new Turn();
         turn.setAvailableCards(game.getCards());
         turn.setTurnOfTeam(TurnOfTeam.TEAM_A);
         game.getRound().setTurn(turn);
-        intent.putExtra("gameState", game);
-        startActivity(intent);
     }
 
 }

@@ -14,7 +14,6 @@
         <activity android:name=".view.round.RoundSummaryActivity" />
         <activity android:name=".view.round.RoundStartActivity" />
         <activity android:name=".view.turn.TurnActivity" />
-        <activity android:name=".view.RoundOneActivity" />
         <activity android:name=".view.GameStartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

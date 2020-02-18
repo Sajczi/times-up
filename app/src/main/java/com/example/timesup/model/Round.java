@@ -43,8 +43,9 @@ public class Round implements Parcelable {
         }
     };
 
-    public Round(List<String> cards) {
-        availableCards = cards;
+    public Round(List<String> cards, RoundNumber roundNumber) {
+        this.availableCards = cards;
+        this.roundNumber = roundNumber;
     }
 
     @Override

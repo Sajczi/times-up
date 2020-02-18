@@ -17,35 +17,29 @@ import java.util.ArrayList;
 
 public class TurnStartActivity extends BaseActivity {
 
-    Game game;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_turn_start);
-        game = getGameState();
-        prepareView(game);
-        addListenerOnButton();
+    protected int getLayoutId() {
+        return R.layout.activity_turn_start;
     }
 
-    private void prepareView(Game game){
+    @Override
+    protected void prepareView(Game game){
         ((TextView)findViewById(R.id.turnTeam)).setText(game.getRound().getTurn().getTurnOfTeam().getText());
     }
 
-    public void addListenerOnButton() {
+    @Override
+    protected void addListenerOnButton() {
         ((Button) findViewById(R.id.turnStartButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                startTurn();
+                switchActivity(TurnActivity.class);
             }
         });
     }
 
-    private void startTurn() {
-        Intent intent = new Intent(this, TurnActivity.class);
+    @Override
+    protected void changeGameState(Game game) {
         game.getRound().getTurn().setCorrectCards(new ArrayList());
         game.getRound().getTurn().setIncorrectCards(new ArrayList());
-        intent.putExtra("gameState", game);
-        startActivity(intent);
     }
 }

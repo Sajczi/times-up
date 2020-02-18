@@ -22,7 +22,7 @@ public class Game implements Parcelable {
 
     public Game(Long cardsAmount, Context context) {
         drawCards(cardsAmount, context);
-        round = new Round(cards);
+        round = new Round(cards, RoundNumber.ROUND_ONE);
         score = new Score();
     }
 

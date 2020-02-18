@@ -16,14 +16,13 @@ import java.util.ArrayList;
 
 public class TurnActivity extends BaseActivity {
 
-    Game game;
+    @Override
+    protected int getLayoutId() {
+       return R.layout.activity_turn;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_turn);
-        game = getGameState();
-        addListenerOnButton();
+    protected void prepareView(Game game) {
         refreshCard();
     }
 
@@ -31,7 +30,8 @@ public class TurnActivity extends BaseActivity {
         ((TextView)findViewById(R.id.turnTeam)).setText(game.getRound().drawCard());
     }
 
-    public void addListenerOnButton() {
+    @Override
+    protected void addListenerOnButton() {
         ((Button) findViewById(R.id.turnOkButton)).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -56,7 +56,7 @@ public class TurnActivity extends BaseActivity {
 
     private boolean finishTurnIfNoMoreCards() {
         if (game.getRound().endOfCards()) {
-            goToTurnSummary();
+            switchActivity(TurnSummaryActivity.class);
             return true;
         }
         return false;
@@ -64,12 +64,6 @@ public class TurnActivity extends BaseActivity {
 
     private String getCard() {
         return ((TextView)findViewById(R.id.turnTeam)).getText().toString();
-    }
-
-    private void goToTurnSummary() {
-        Intent intent = new Intent(this, TurnSummaryActivity.class);
-        intent.putExtra("gameState", game);
-        startActivity(intent);
     }
 
 }

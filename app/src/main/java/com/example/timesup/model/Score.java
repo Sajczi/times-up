@@ -18,6 +18,30 @@ public class Score implements Parcelable {
     private Long teamBRoundTwoScore = 0L;
     private Long teamBRoundThreeScore = 0L;
 
+    public void incrementTeamARoundOneScore(){
+        this.teamARoundOneScore += 1;
+    }
+
+    public void incrementTeamARoundTwoScore(){
+        this.teamARoundTwoScore += 1;
+    }
+
+    public void incrementTeamARoundThreeScore(){
+        this.teamARoundThreeScore += 1;
+    }
+
+    public void incrementTeamBRoundOneScore(){
+        this.teamBRoundOneScore += 1;
+    }
+
+    public void incrementTeamBRoundTwoScore(){
+        this.teamBRoundTwoScore += 1;
+    }
+
+    public void incrementTeamBRoundThreeScore(){
+        this.teamBRoundThreeScore += 1;
+    }
+
     protected Score(Parcel in) {
         teamARoundOneScore = in.readLong();
         teamARoundTwoScore = in.readLong();
