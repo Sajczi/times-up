@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.example.timesup.R;
 import com.example.timesup.enums.RoundNumber;
+import com.example.timesup.enums.TurnOfTeam;
 import com.example.timesup.model.Game;
 import com.example.timesup.model.Round;
+import com.example.timesup.model.Turn;
 import com.example.timesup.view.BaseActivity;
 import com.example.timesup.view.turn.TurnStartActivity;
 
@@ -50,7 +52,11 @@ public class RoundStartActivity extends BaseActivity {
 
     private void startTurn() {
         Intent intent = new Intent(this, TurnStartActivity.class);
-        intent.putExtra("game", game);
+        Turn turn = new Turn();
+        turn.setAvailableCards(game.getCards());
+        turn.setTurnOfTeam(TurnOfTeam.TEAM_A);
+        game.getRound().setTurn(turn);
+        intent.putExtra("gameState", game);
         startActivity(intent);
     }
 

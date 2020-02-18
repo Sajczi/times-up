@@ -9,4 +9,13 @@ public enum RoundNumber {
 
     @Getter
     private String text;
+
+    public static RoundNumber parse(String text) {
+        for (RoundNumber item : values()) {
+            if (item.getText().equals(text)) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

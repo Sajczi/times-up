@@ -6,4 +6,58 @@
     android:layout_height="match_parent"
     tools:context=".view.turn.TurnActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E7D27F"
+        tools:context=".view.turn.TurnStartActivity"
+        tools:layout_editor_absoluteX="-41dp"
+        tools:layout_editor_absoluteY="36dp">
+
+        <Button
+            android:id="@+id/turnOkButton"
+            android:layout_width="113dp"
+            android:layout_height="67dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="267dp"
+            android:background="#FF35D33C"
+            android:text="@android:string/ok"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/turnNotOkButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/turnTeam" />
+
+        <Button
+            android:id="@+id/turnNotOkButton"
+            android:layout_width="118dp"
+            android:layout_height="69dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="130dp"
+            android:layout_marginEnd="61dp"
+            android:layout_marginBottom="265dp"
+            android:background="#FFF44336"
+            android:text="ŹLE"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/turnStartButton"
+            app:layout_constraintTop_toBottomOf="@+id/turnTeam" />
+
+        <TextView
+            android:id="@+id/turnTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="172dp"
+            android:layout_marginTop="233dp"
+            android:layout_marginEnd="180dp"
+            android:layout_marginBottom="479dp"
+            android:text="TextView"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.359"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

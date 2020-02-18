@@ -4,6 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E7D27F"
     tools:context=".view.turn.TurnSummaryActivity">
 
+    <TextView
+        android:id="@+id/turnSummaryOkCards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="189dp"
+        android:layout_marginEnd="241dp"
+        android:text="TextView"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/turnSummaryNotOkCards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="81dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="239dp"
+        android:text="TextView"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/turnSummaryOkButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/turnSummaryOkCards" />
+
+    <Button
+        android:id="@+id/turnSummaryOkButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="159dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="164dp"
+        android:layout_marginBottom="248dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/turnSummaryNotOkCards" />
 </androidx.constraintlayout.widget.ConstraintLayout>

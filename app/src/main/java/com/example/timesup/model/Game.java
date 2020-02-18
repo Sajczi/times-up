@@ -1,5 +1,6 @@
 package com.example.timesup.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -19,13 +20,15 @@ public class Game implements Parcelable {
     private Round round;
     private Score score;
 
-    public Game(Long cardsAmount) {
-        drawCards(cardsAmount);
+    public Game(Long cardsAmount, Context context) {
+        drawCards(cardsAmount, context);
         round = new Round(cards);
         score = new Score();
     }
 
     protected Game(Parcel in) {
+        round = in.readParcelable(Round.class.getClassLoader());
+        score = in.readParcelable(Score.class.getClassLoader());
         cards = in.createStringArrayList();
     }
 
@@ -41,8 +44,8 @@ public class Game implements Parcelable {
         }
     };
 
-    private void drawCards(Long cardsAmount) {
-        this.cards =  CardDrawer.drawCards(cardsAmount);
+    private void drawCards(Long cardsAmount, Context context) {
+        this.cards =  new CardDrawer(context).drawCards(cardsAmount);
     }
 
     public void shuffle() {
@@ -56,6 +59,8 @@ public class Game implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        String s = "s";
+        dest.writeParcelable(this.round, flags);
+        dest.writeParcelable(this.score, flags);
+        dest.writeList(this.cards);
     }
 }

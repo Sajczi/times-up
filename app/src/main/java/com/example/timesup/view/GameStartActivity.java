@@ -21,7 +21,7 @@ public class GameStartActivity extends AppCompatActivity {
     GameController gameController;
     Game game;
 
-    private Long cardsAmount = 40L;
+    private Long cardsAmount = 4L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,9 @@ public class GameStartActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
+                cardsAmount = Long.valueOf(((TextView) findViewById(R.id.cardsAmount)).getText().toString());
                 gameController = new GameController();
-                game = gameController.initGame(cardsAmount);
+                game = gameController.initGame(cardsAmount, getApplicationContext());
                 startRoundOne();
             }
 
@@ -53,7 +54,7 @@ public class GameStartActivity extends AppCompatActivity {
     private void startRoundOne() {
         Intent intent = new Intent(this, RoundStartActivity.class);
         game.getRound().setRoundNumber(RoundNumber.ROUND_ONE);
-        intent.putExtra("game", game);
+        intent.putExtra("gameState", game);
         startActivity(intent);
     }
 }

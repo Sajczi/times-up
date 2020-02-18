@@ -12,6 +12,8 @@ import com.example.timesup.model.Game;
 
 public class BaseActivity extends AppCompatActivity {
 
+    protected Game game;
+
     protected Game getGameState() {
         Bundle bundle = getIntent().getExtras();
         return (Game) bundle.get("gameState");

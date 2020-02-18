@@ -14,7 +14,6 @@ public class Round implements Parcelable {
 
     private RoundNumber roundNumber;
     private List<String> availableCards;
-    private Score score;
     private Turn turn;
 
     public Round(RoundNumber roundNumber, List<String> cards) {
@@ -23,7 +22,13 @@ public class Round implements Parcelable {
     }
 
     protected Round(Parcel in) {
+        turn = in.readParcelable(Turn.class.getClassLoader());
         availableCards = in.createStringArrayList();
+        roundNumber = RoundNumber.parse(in.readString());
+    }
+
+    public String drawCard() {
+        return availableCards.remove(0);
     }
 
     public static final Creator<Round> CREATOR = new Creator<Round>() {
@@ -49,6 +54,12 @@ public class Round implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(this.turn, flags);
         dest.writeStringList(availableCards);
+        dest.writeString(roundNumber.getText());
+    }
+
+    public boolean endOfCards() {
+        return availableCards.isEmpty();
     }
 }
