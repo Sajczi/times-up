@@ -10,9 +10,11 @@ ekrany robimy reu¿ywalne, ich zachowania zale¿ne od przekazanych enumów
 
 problemy:
 1) nie znalazlem póki co prostego sposobu ¿eby opakowaæ to w MVC - przekazujemy stan gry pomiêdzy otwarciem kolejnych ekranów
-2) serializacja modelu przy przekazaniu miêdzy ekranami - mechanika Game extends Parcelable - coœ siê nie przekazuje tak jak powinno
-3) cardDraw - koncept taki, ¿e przy starcie gry uruchamiamy metode z utila CardDrawer - niech siêga do pliku tekstowego, zbudowanego w formie:
+2) DONE //serializacja modelu przy przekazaniu miêdzy ekranami - mechanika Game extends Parcelable - coœ siê nie przekazuje tak jak powinno
+3) DONE 1/2 - myslalem zeby to dzialalo tak, ze jeden plik otwieramy i bierzemy hasla i potem nadpisujemy, ale mam problem z implementacja tego
+cardDraw - koncept taki, ¿e przy starcie gry uruchamiamy metode z utila CardDrawer - niech siêga do pliku tekstowego, zbudowanego w formie:
 has³o1;u¿ycia1
 has³o2;u¿ycia2
 gdzie u¿yciaX to informacja ile razy has³o ju¿ by³o u¿yte w grach - ¿eby jak najrzadziej u¿ywaæ tych samych
 4) GUI - no to wiadomka póki co na odjeb sie byle klikaæ
+5) stopwatch do odliczania czasu tury
