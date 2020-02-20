@@ -2,7 +2,6 @@ package com.example.timesup.util;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.os.Environment;
 
 import com.example.timesup.model.Card;
 
@@ -38,6 +37,7 @@ public class CardDrawer extends ContextWrapper {
                 return c1.getUsedCounter() - c2.getUsedCounter();
             }
         });
+        Collections.shuffle(cards);
         return cards.subList(0, cardsAmount.intValue());
     }
 

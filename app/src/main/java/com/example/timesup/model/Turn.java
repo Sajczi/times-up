@@ -26,6 +26,10 @@ public class Turn implements Parcelable {
         turnOfTeam = TurnOfTeam.parse(in.readString());
     }
 
+    public String drawCard() {
+        return availableCards.remove(0);
+    }
+
     public static final Creator<Turn> CREATOR = new Creator<Turn>() {
         @Override
         public Turn createFromParcel(Parcel in) {
@@ -48,6 +52,6 @@ public class Turn implements Parcelable {
         dest.writeStringList(availableCards);
         dest.writeStringList(correctCards);
         dest.writeStringList(incorrectCards);
-        dest.writeString(turnOfTeam.getText());
+        dest.writeString(turnOfTeam.getCode().getCode());
     }
 }

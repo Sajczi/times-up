@@ -27,10 +27,6 @@ public class Round implements Parcelable {
         roundNumber = RoundNumber.parse(in.readString());
     }
 
-    public String drawCard() {
-        return availableCards.remove(0);
-    }
-
     public static final Creator<Round> CREATOR = new Creator<Round>() {
         @Override
         public Round createFromParcel(Parcel in) {
@@ -60,7 +56,4 @@ public class Round implements Parcelable {
         dest.writeString(roundNumber.getText());
     }
 
-    public boolean endOfCards() {
-        return availableCards.isEmpty();
-    }
 }

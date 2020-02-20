@@ -7,31 +7,59 @@
     android:background="#E7D27F"
     tools:context=".view.turn.TurnStartActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/turnStartGuidelineHorizontal1"
+        app:layout_constraintGuide_percent="0.2"
+        android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/turnStartGuidelineHorizontal2"
+        app:layout_constraintGuide_percent="0.3"
+        android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/turnStartGuidelineHorizontal3"
+        app:layout_constraintGuide_percent="0.6"
+        android:orientation="horizontal"/>
+
     <Button
         android:id="@+id/turnStartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="162dp"
-        android:layout_marginTop="117dp"
-        android:layout_marginEnd="161dp"
-        android:layout_marginBottom="314dp"
         android:text="Start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/turnTeam" />
+        app:layout_constraintTop_toTopOf="@+id/turnStartGuidelineHorizontal3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
-        android:id="@+id/turnTeam"
+        android:id="@+id/turnStartTeamPlaying"
+        android:layout_width="155dp"
+        android:layout_height="88dp"
+        android:fontFamily="casual"
+        android:gravity="center_horizontal"
+        android:text="TextView"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@+id/turnStartGuidelineHorizontal2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/turnStartNowPlaying"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="233dp"
-        android:layout_marginEnd="180dp"
-        android:layout_marginBottom="117dp"
+        android:fontFamily="casual"
+        android:gravity="center_horizontal|center_vertical"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/turnStartButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="22sp"
+        app:layout_constraintTop_toTopOf="@+id/turnStartGuidelineHorizontal1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

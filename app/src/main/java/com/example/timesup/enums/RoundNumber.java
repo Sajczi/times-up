@@ -18,4 +18,8 @@ public enum RoundNumber {
         }
         return null;
     }
+
+    public static RoundNumber next(RoundNumber currentRoundNumber) {
+        return ROUND_ONE.equals(currentRoundNumber) ?  ROUND_TWO : ROUND_THREE;
+    }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.example.timesup.view.round.RoundStartActivity;
 
 public class GameStartActivity extends BaseActivity {
 
-    ImageButton imageButton;
+    Button imageButton;
     GameController gameController;
 
     private Long cardsAmount = 4L;
@@ -40,7 +41,7 @@ public class GameStartActivity extends BaseActivity {
 
     @Override
     protected void addListenerOnButton() {
-        imageButton = (ImageButton) findViewById(R.id.startButton);
+        imageButton = (Button) findViewById(R.id.startButton);
         imageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {

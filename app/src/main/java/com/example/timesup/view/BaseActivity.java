@@ -3,14 +3,14 @@ package com.example.timesup.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.timesup.R;
+import com.example.timesup.enums.MessageCode;
 import com.example.timesup.enums.RoundNumber;
 import com.example.timesup.model.Game;
+import com.example.timesup.util.MessageSourceAccessor;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -71,5 +71,21 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected void changeGameState(Game game) {
+    }
+
+    protected String getLabelText(MessageCode messageCode) {
+        return MessageSourceAccessor.getMessage(messageCode);
+    }
+
+    private String getLabelText(MessageCode messageCode, Object... params) {
+        return MessageSourceAccessor.getMessage(messageCode, params);
+    }
+
+    protected void setLabelText(int textViewId, MessageCode messageCode, Object... params) {
+        ((TextView) findViewById(textViewId)).setText(getLabelText(messageCode, params));
+    }
+
+    protected void setLabelText(int textViewId, String text) {
+        ((TextView) findViewById(textViewId)).setText(text);
     }
 }

@@ -7,10 +7,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.timesup.R;
+import com.example.timesup.enums.MessageCode;
 import com.example.timesup.enums.RoundNumber;
 import com.example.timesup.enums.TurnOfTeam;
 import com.example.timesup.model.Game;
 import com.example.timesup.view.BaseActivity;
+import com.example.timesup.view.round.RoundSummaryActivity;
 
 public class TurnSummaryActivity extends BaseActivity {
 
@@ -21,8 +23,8 @@ public class TurnSummaryActivity extends BaseActivity {
 
     @Override
     protected void prepareView(Game game){
-        ((TextView)findViewById(R.id.turnSummaryOkCards)).setText("Zgadnięte hasła: " + game.getRound().getTurn().getCorrectCards().size());
-        ((TextView)findViewById(R.id.turnSummaryNotOkCards)).setText("Niezgadnięte hasła: " + game.getRound().getTurn().getIncorrectCards().size());
+        setLabelText(R.id.turnSummaryTeamAScore, MessageCode.TURN_SUMMARY_CORRECT_CARDS, game.getRound().getTurn().getCorrectCards().size());
+        setLabelText(R.id.turnSummaryTeamBScore, MessageCode.TURN_SUMMARY_INCORRECT_CARDS, game.getRound().getTurn().getIncorrectCards().size());
     }
 
     @Override
@@ -37,24 +39,32 @@ public class TurnSummaryActivity extends BaseActivity {
 
     private void startTurn() {
         game.getRound().getAvailableCards().removeAll(game.getRound().getTurn().getCorrectCards());
-        if (RoundNumber.ROUND_ONE.equals(game.getRound().getRoundNumber())) {
-            if (TurnOfTeam.TEAM_A.equals(game.getRound().getTurn().getTurnOfTeam())) {
-                game.getScore().incrementTeamARoundOneScore();
-            } else {
-                game.getScore().incrementTeamBRoundOneScore();
-            }
-        } else if (RoundNumber.ROUND_TWO.equals(game.getRound().getRoundNumber())) {
-            if (TurnOfTeam.TEAM_A.equals(game.getRound().getTurn().getTurnOfTeam())) {
-                game.getScore().incrementTeamARoundTwoScore();
-            } else {
-                game.getScore().incrementTeamBRoundTwoScore();
-            }
-        } else if (RoundNumber.ROUND_THREE.equals(game.getRound().getRoundNumber())) {
-            if (TurnOfTeam.TEAM_A.equals(game.getRound().getTurn().getTurnOfTeam())) {
-                game.getScore().incrementTeamARoundThreeScore();
-            } else {
-                game.getScore().incrementTeamBRoundThreeScore();
-            }
+        game.getRound().getTurn().getCorrectCards().forEach(card -> {
+            if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
+                if (TurnOfTeam.TEAM_A.equals(game.getCurrentTurnOfTeam())) {
+                    game.getScore().incrementTeamARoundOneScore();
+                } else {
+                    game.getScore().incrementTeamBRoundOneScore();
+                }
+            } else if (RoundNumber.ROUND_TWO.equals(game.getCurrentRoundNumber())) {
+                if (TurnOfTeam.TEAM_A.equals(game.getCurrentTurnOfTeam())) {
+                    game.getScore().incrementTeamARoundTwoScore();
+                } else {
+                    game.getScore().incrementTeamBRoundTwoScore();
+                }
+            } else if (RoundNumber.ROUND_THREE.equals(game.getCurrentRoundNumber())) {
+                if (TurnOfTeam.TEAM_A.equals(game.getCurrentTurnOfTeam())) {
+                    game.getScore().incrementTeamARoundThreeScore();
+                } else {
+                    game.getScore().incrementTeamBRoundThreeScore();
+                }
+            }});
+        if (game.getRound().getAvailableCards().isEmpty()){
+            switchActivity(RoundSummaryActivity.class);
+        } else {
+            game.getRound().getTurn().setTurnOfTeam(TurnOfTeam.next(game.getCurrentTurnOfTeam()));
+            game.getRound().getTurn().setAvailableCards(game.getRound().getAvailableCards());
+            switchActivity(TurnStartActivity.class);
         }
     }
 }

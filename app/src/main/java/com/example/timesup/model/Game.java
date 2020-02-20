@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.timesup.enums.RoundNumber;
+import com.example.timesup.enums.TurnOfTeam;
 import com.example.timesup.util.CardDrawer;
 
 import java.util.Collections;
@@ -27,9 +28,17 @@ public class Game implements Parcelable {
     }
 
     protected Game(Parcel in) {
+        cards = in.createStringArrayList();
         round = in.readParcelable(Round.class.getClassLoader());
         score = in.readParcelable(Score.class.getClassLoader());
-        cards = in.createStringArrayList();
+    }
+
+    public RoundNumber getCurrentRoundNumber() {
+        return round.getRoundNumber();
+    }
+
+    public TurnOfTeam getCurrentTurnOfTeam() {
+        return round.getTurn().getTurnOfTeam();
     }
 
     public static final Creator<Game> CREATOR = new Creator<Game>() {
@@ -59,8 +68,8 @@ public class Game implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringList(this.cards);
         dest.writeParcelable(this.round, flags);
         dest.writeParcelable(this.score, flags);
-        dest.writeList(this.cards);
     }
 }

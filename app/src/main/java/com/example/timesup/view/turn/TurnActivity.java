@@ -1,18 +1,16 @@
 package com.example.timesup.view.turn;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.graphics.PorterDuff;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.timesup.R;
-import com.example.timesup.controller.GameController;
+import com.example.timesup.enums.MessageCode;
 import com.example.timesup.model.Game;
 import com.example.timesup.view.BaseActivity;
-
-import java.util.ArrayList;
 
 public class TurnActivity extends BaseActivity {
 
@@ -26,36 +24,59 @@ public class TurnActivity extends BaseActivity {
         refreshCard();
     }
 
-    private void refreshCard(){
-        ((TextView)findViewById(R.id.turnTeam)).setText(game.getRound().drawCard());
-    }
-
     @Override
     protected void addListenerOnButton() {
-        ((Button) findViewById(R.id.turnOkButton)).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View arg0) {
+        (findViewById(R.id.turnOkButton)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
                         game.getRound().getTurn().getCorrectCards().add(getCard());
                         if(!finishTurnIfNoMoreCards()) {
                             refreshCard();
                         }
+                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.ok_button_square_down));
+                        break;
                     }
-                });
-        ((Button) findViewById(R.id.turnNotOkButton)).setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View arg0) {
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP: {
+                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.ok_button_square));
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+        (findViewById(R.id.turnWrongButton)).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
                         game.getRound().getTurn().getIncorrectCards().add(getCard());
                         if(!finishTurnIfNoMoreCards()) {
                             refreshCard();
                         }
+                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.wrong_button_square_down));
+                        break;
                     }
-                });
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP: {
+                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.wrong_button_square));
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+    }
+
+    private void refreshCard(){
+        setLabelText(R.id.turnStartTeamPlaying, game.getRound().getTurn().drawCard());
+        setLabelText(R.id.turnCardsLeft, MessageCode.TURN_CARDS_LEFT, game.getRound().getTurn().getAvailableCards().size());
     }
 
     private boolean finishTurnIfNoMoreCards() {
-        if (game.getRound().endOfCards()) {
+        if (game.getRound().getTurn().getAvailableCards().isEmpty()) {
             switchActivity(TurnSummaryActivity.class);
             return true;
         }
@@ -63,7 +84,7 @@ public class TurnActivity extends BaseActivity {
     }
 
     private String getCard() {
-        return ((TextView)findViewById(R.id.turnTeam)).getText().toString();
+        return ((TextView)findViewById(R.id.turnStartTeamPlaying)).getText().toString();
     }
 
 }

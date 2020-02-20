@@ -11,53 +11,75 @@
         android:layout_height="match_parent"
         android:background="#E7D27F"
         tools:context=".view.turn.TurnStartActivity"
-        tools:layout_editor_absoluteX="-41dp"
-        tools:layout_editor_absoluteY="36dp">
+        tools:layout_editor_absoluteX="-84dp"
+        tools:layout_editor_absoluteY="33dp">
 
-        <Button
-            android:id="@+id/turnOkButton"
-            android:layout_width="113dp"
-            android:layout_height="67dp"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="130dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginBottom="267dp"
-            android:background="#FF35D33C"
-            android:text="@android:string/ok"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/turnNotOkButton"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/turnTeam" />
-
-        <Button
-            android:id="@+id/turnNotOkButton"
-            android:layout_width="118dp"
-            android:layout_height="69dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="130dp"
-            android:layout_marginEnd="61dp"
-            android:layout_marginBottom="265dp"
-            android:background="#FFF44336"
-            android:text="ŹLE"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/turnStartButton"
-            app:layout_constraintTop_toBottomOf="@+id/turnTeam" />
-
-        <TextView
-            android:id="@+id/turnTeam"
+        <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="172dp"
-            android:layout_marginTop="233dp"
-            android:layout_marginEnd="180dp"
-            android:layout_marginBottom="479dp"
+            android:id="@+id/turnGuidelineVertical1"
+            app:layout_constraintGuide_percent="0.08"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turnGuidelineVertical2"
+            app:layout_constraintGuide_percent="0.92"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turnGuidelineHorizontal1"
+            app:layout_constraintGuide_percent="0.25"
+            android:orientation="horizontal"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turnGuidelineHorizontal2"
+            app:layout_constraintGuide_percent="0.55"
+            android:orientation="horizontal"/>
+
+        <TextView
+            android:id="@+id/turnStartTeamPlaying"
+            android:layout_width="339dp"
+            android:layout_height="149dp"
+            android:fontFamily="casual"
+            android:gravity="center_horizontal"
             android:text="TextView"
-            android:textSize="36sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.359"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/turnGuidelineHorizontal1"/>
+
+        <TextView
+            android:id="@+id/turnCardsLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="casual"
+            android:gravity="left"
+            android:text="TextView"
+            app:layout_constraintLeft_toLeftOf="@+id/turnGuidelineVertical1"
+            app:layout_constraintBottom_toTopOf="@+id/turnGuidelineHorizontal1" />
+
+        <ImageButton
+            android:id="@+id/turnOkButton"
+            android:layout_width="150dp"
+            android:layout_height="144dp"
+            app:layout_constraintLeft_toLeftOf="@+id/turnGuidelineVertical1"
+            app:layout_constraintTop_toTopOf="@+id/turnGuidelineHorizontal2"
+            app:srcCompat="@drawable/ok_button_square" />
+
+        <ImageButton
+            android:id="@+id/turnWrongButton"
+            android:layout_width="150dp"
+            android:layout_height="144dp"
+            app:layout_constraintRight_toLeftOf="@+id/turnGuidelineVertical2"
+            app:layout_constraintTop_toTopOf="@+id/turnGuidelineHorizontal2"
+            app:srcCompat="@drawable/wrong_button_square" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,6 +42,14 @@ public class Score implements Parcelable {
         this.teamBRoundThreeScore += 1;
     }
 
+    public Long sumTeamAScore() {
+        return teamARoundOneScore + teamARoundTwoScore + teamARoundThreeScore;
+    }
+
+    public Long sumTeamBScore() {
+        return teamBRoundOneScore + teamBRoundTwoScore +  teamBRoundThreeScore;
+    }
+
     protected Score(Parcel in) {
         teamARoundOneScore = in.readLong();
         teamARoundTwoScore = in.readLong();

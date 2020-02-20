@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.turn.TurnSummaryActivity"></activity>
+        <activity android:name=".view.GameSummaryActivity"></activity>
+        <activity android:name=".view.turn.TurnSummaryActivity" />
         <activity android:name=".view.turn.TurnStartActivity" />
         <activity android:name=".view.round.RoundSummaryActivity" />
         <activity android:name=".view.round.RoundStartActivity" />
