@@ -24,25 +24,53 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/turnSummaryGuidelineHorizontal1"
-            app:layout_constraintGuide_percent="0.3"
+            app:layout_constraintGuide_percent="0.1"
             android:orientation="horizontal"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/turnSummaryGuidelineHorizontal2"
-            app:layout_constraintGuide_percent="0.4"
+            app:layout_constraintGuide_percent="0.2"
             android:orientation="horizontal"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/turnSummaryGuidelineHorizontal3"
+            app:layout_constraintGuide_percent="0.7"
+            android:orientation="horizontal"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turnSummaryGuidelineTableVertical1"
+            app:layout_constraintGuide_percent="0.1"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turnSummaryGuidelineTableVertical2"
+            app:layout_constraintGuide_percent="0.9"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turnSummaryGuidelineTableHorizontal1"
+            app:layout_constraintGuide_percent="0.3"
+            android:orientation="horizontal"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/turnSummaryGuidelineTableHorizontal2"
             app:layout_constraintGuide_percent="0.6"
             android:orientation="horizontal"/>
 
         <TextView
-            android:id="@+id/turnSummaryTeamBScore"
+            android:id="@+id/turnSummaryCorrectCards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="casual"
@@ -52,7 +80,7 @@
             app:layout_constraintTop_toTopOf="@+id/turnSummaryGuidelineHorizontal1"  />
 
         <TextView
-            android:id="@+id/turnSummaryTeamAScore"
+            android:id="@+id/turnSummaryIncorrectCards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="casual"
@@ -60,6 +88,24 @@
             android:textSize="22sp"
             app:layout_constraintLeft_toLeftOf="@+id/turnSummaryGuidelineVertical1"
             app:layout_constraintTop_toTopOf="@+id/turnSummaryGuidelineHorizontal2" />
+
+        <ScrollView
+            android:scrollbars="none"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/turnSummaryGuidelineTableVertical1"
+            app:layout_constraintRight_toLeftOf="@+id/turnSummaryGuidelineTableVertical2"
+            app:layout_constraintTop_toTopOf="@+id/turnSummaryGuidelineTableHorizontal1"
+            app:layout_constraintBottom_toTopOf="@+id/turnSummaryGuidelineTableHorizontal2">
+            <TableLayout
+                android:id="@+id/turnSummaryTableLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:stretchColumns="1"
+                app:layout_constraintLeft_toLeftOf="@+id/turnSummaryGuidelineTableVertical1"
+                app:layout_constraintTop_toTopOf="@+id/turnSummaryGuidelineTableHorizontal1">
+            </TableLayout>
+        </ScrollView>
 
         <Button
             android:id="@+id/turnSummaryOkButton"

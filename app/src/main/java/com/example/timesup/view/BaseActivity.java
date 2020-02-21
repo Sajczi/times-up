@@ -54,12 +54,12 @@ public class BaseActivity extends AppCompatActivity {
     protected <T extends BaseActivity> void switchActivity(Class<T> clazz) {
         Intent intent = new Intent(this, clazz).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         this.overridePendingTransition(0, 0);
-        changeGameState(game);
+        changeGameState();
         intent.putExtra("gameState", game);
         startActivity(intent);
     }
 
-    protected void changeGameState(Game game) {
+    protected void changeGameState() {
     }
 
     protected String getLabelText(MessageCode messageCode) {

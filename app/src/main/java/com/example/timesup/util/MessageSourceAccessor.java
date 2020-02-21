@@ -16,6 +16,8 @@ public class MessageSourceAccessor {
         put(MessageCode.ROUND_THREE_START_DESCRIPTION, "Te same hasła do w rundzie 1, ale osoba opowiadająca pokazuje hasło. Może wydawać dźwięki, ale nie może mówić. Drużyna grająca może głośno się naradzać, ale liczy się tylko jedna odpowiedź - pierwsza która padnie po uderzeniu ręką w stół przez członka drużyny grającej. Osoba opowiadająca nie może reagować na dyskusje drużyny grającej.");
         put(MessageCode.TEAM_A, "Drużyna A");
         put(MessageCode.TEAM_B, "Drużyna B");
+        put(MessageCode.TEAM_A_SCORE, "Drużyna A: %d");
+        put(MessageCode.TEAM_B_SCORE, "Drużyna B: %d");
         put(MessageCode.TURN_START_NOW_PLAYING, "Teraz gra");
         put(MessageCode.GAME_RESULT_DRAW, "Remis!");
         put(MessageCode.GAME_RESULT_TEAM_A_WIN, "Wygrywa drużyna A!");

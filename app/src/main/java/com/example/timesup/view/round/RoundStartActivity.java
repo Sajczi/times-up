@@ -13,6 +13,8 @@ import com.example.timesup.model.Turn;
 import com.example.timesup.view.BaseActivity;
 import com.example.timesup.view.turn.TurnStartActivity;
 
+import java.util.ArrayList;
+
 public class RoundStartActivity extends BaseActivity {
 
     private Button startRoundButton;
@@ -26,7 +28,7 @@ public class RoundStartActivity extends BaseActivity {
 
     @Override
     protected void prepareView(Game game){
-        startRoundButton = findViewById(R.id.turnSummaryOkButton);
+        startRoundButton = findViewById(R.id.roundStartStartButton);
         roundNumberText = findViewById(R.id.roundNameTextView);
         roundStartDescription =findViewById(R.id.roundStartDescription);
         if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
@@ -43,7 +45,7 @@ public class RoundStartActivity extends BaseActivity {
 
     @Override
     protected void addListenerOnButton() {
-        startRoundButton.setOnClickListener(new View.OnClickListener() {
+        ((Button)startRoundButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 switchActivity(TurnStartActivity.class);
@@ -52,13 +54,14 @@ public class RoundStartActivity extends BaseActivity {
     }
 
     @Override
-    protected void changeGameState(Game game) {
-        Turn turn = new Turn();
-        turn.setAvailableCards(game.getRound().getAvailableCards());
-        if  (turn.getTurnOfTeam() == null) {
-            turn.setTurnOfTeam(TurnOfTeam.TEAM_A);
+    protected void changeGameState() {
+        if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
+            game.getRound().setTurn(new Turn());
+            game.getRound().getTurn().setTurnOfTeam(TurnOfTeam.TEAM_A);
         }
-        game.getRound().setTurn(turn);
+        game.getRound().getTurn().setAvailableCards(game.getRound().getAvailableCards());
+        game.getRound().getTurn().setCorrectCards(new ArrayList());
+        game.getRound().getTurn().setIncorrectCards(new ArrayList());
     }
 
 }

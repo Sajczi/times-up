@@ -21,7 +21,7 @@ public class GameStartActivity extends BaseActivity {
     Button imageButton;
     GameController gameController;
 
-    private Long cardsAmount = 4L;
+    private Long cardsAmount = 10L;
 
     @Override
     protected int getLayoutId(){
@@ -55,7 +55,7 @@ public class GameStartActivity extends BaseActivity {
     }
 
     @Override
-    protected void changeGameState(Game game) {
+    protected void changeGameState() {
         game.getRound().setRoundNumber(RoundNumber.ROUND_ONE);
     }
 

@@ -14,6 +14,8 @@ public enum MessageCode {
     ROUND_THREE_START_DESCRIPTION("round.three.start.desciption"),
     TEAM_A("team.a"),
     TEAM_B("team.b"),
+    TEAM_A_SCORE("team.a.score"),
+    TEAM_B_SCORE("team.b.score"),
     TURN_START_NOW_PLAYING("turn.start.now.playing"),
     GAME_RESULT_DRAW("game.result.draw"),
     GAME_RESULT_TEAM_A_WIN("game.result.team.a.win"),

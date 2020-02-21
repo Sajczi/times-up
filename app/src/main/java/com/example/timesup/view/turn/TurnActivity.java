@@ -17,6 +17,8 @@ import java.util.TimerTask;
 
 public class TurnActivity extends BaseActivity {
 
+    Timer timer;
+
     @Override
     protected int getLayoutId() {
        return R.layout.activity_turn;
@@ -25,7 +27,7 @@ public class TurnActivity extends BaseActivity {
     @Override
     protected void prepareView(Game game) {
         refreshCard();
-        addStopwatch();
+        this.timer = addStopwatch();
     }
 
     @Override
@@ -81,6 +83,7 @@ public class TurnActivity extends BaseActivity {
 
     private boolean finishTurnIfNoMoreCards() {
         if (game.getRound().getTurn().getAvailableCards().isEmpty()) {
+            timer.cancel();
             switchActivity(TurnSummaryActivity.class);
             return true;
         }
@@ -91,7 +94,7 @@ public class TurnActivity extends BaseActivity {
         return ((TextView)findViewById(R.id.turnTeamPlaying)).getText().toString();
     }
 
-    private void addStopwatch() {
+    private Timer addStopwatch() {
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask()
         {
@@ -113,6 +116,7 @@ public class TurnActivity extends BaseActivity {
             }
         };
         timer.schedule(timerTask, 0, 1000);
+        return timer;
     }
 
 }
