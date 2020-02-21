@@ -51,20 +51,9 @@ public class BaseActivity extends AppCompatActivity {
         return (RoundNumber) bundle.get("roundNumber");
     }
 
-    protected Runnable addStopwatch(final TextView textView) {
-        final Handler handler = new Handler();
-        return new Runnable() {
-            Long startTime  = 30L;
-            public void run() {
-                startTime -= 1L;
-                textView.setText(startTime.toString());
-                handler.postDelayed(this, 10L);
-            }
-        };
-    }
-
     protected <T extends BaseActivity> void switchActivity(Class<T> clazz) {
-        Intent intent = new Intent(this, clazz);
+        Intent intent = new Intent(this, clazz).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        this.overridePendingTransition(0, 0);
         changeGameState(game);
         intent.putExtra("gameState", game);
         startActivity(intent);

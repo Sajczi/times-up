@@ -12,6 +12,9 @@ import com.example.timesup.enums.MessageCode;
 import com.example.timesup.model.Game;
 import com.example.timesup.view.BaseActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class TurnActivity extends BaseActivity {
 
     @Override
@@ -22,6 +25,7 @@ public class TurnActivity extends BaseActivity {
     @Override
     protected void prepareView(Game game) {
         refreshCard();
+        addStopwatch();
     }
 
     @Override
@@ -71,7 +75,7 @@ public class TurnActivity extends BaseActivity {
     }
 
     private void refreshCard(){
-        setLabelText(R.id.turnStartTeamPlaying, game.getRound().getTurn().drawCard());
+        setLabelText(R.id.turnTeamPlaying, game.getRound().getTurn().drawCard());
         setLabelText(R.id.turnCardsLeft, MessageCode.TURN_CARDS_LEFT, game.getRound().getTurn().getAvailableCards().size());
     }
 
@@ -84,7 +88,31 @@ public class TurnActivity extends BaseActivity {
     }
 
     private String getCard() {
-        return ((TextView)findViewById(R.id.turnStartTeamPlaying)).getText().toString();
+        return ((TextView)findViewById(R.id.turnTeamPlaying)).getText().toString();
+    }
+
+    private void addStopwatch() {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask()
+        {
+            int i = 30;
+            @Override
+            public void run()
+            {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run()
+                    {
+                        i--;
+                        if (i == 0) {
+                            switchActivity(TurnSummaryActivity.class);
+                        }
+                        setLabelText(R.id.turnStopwatch, String.valueOf(i) + "'");
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask, 0, 1000);
     }
 
 }

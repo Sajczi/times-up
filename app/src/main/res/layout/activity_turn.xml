@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#E7D27F"
-        tools:context=".view.turn.TurnStartActivity"
+        tools:context=".view.turn.turnActivity"
         tools:layout_editor_absoluteX="-84dp"
         tools:layout_editor_absoluteY="33dp">
 
@@ -31,6 +31,13 @@
         <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/turnGuidelineVertical3"
+            app:layout_constraintGuide_percent="0.6"
+            android:orientation="vertical"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/turnGuidelineHorizontal1"
             app:layout_constraintGuide_percent="0.25"
             android:orientation="horizontal"/>
@@ -43,17 +50,29 @@
             android:orientation="horizontal"/>
 
         <TextView
-            android:id="@+id/turnStartTeamPlaying"
+            android:id="@+id/turnStopwatch"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:fontFamily="casual"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="TextView"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/turnGuidelineHorizontal1"
+            app:layout_constraintLeft_toLeftOf="@+id/turnGuidelineVertical3" />
+
+        <TextView
+            android:id="@+id/turnTeamPlaying"
             android:layout_width="339dp"
             android:layout_height="149dp"
             android:fontFamily="casual"
-            android:gravity="center_horizontal"
+            android:gravity="center_horizontal|center_vertical"
             android:text="TextView"
             android:textSize="32sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/turnGuidelineHorizontal1"/>
+            app:layout_constraintTop_toTopOf="@+id/turnGuidelineHorizontal1" />
 
         <TextView
             android:id="@+id/turnCardsLeft"
