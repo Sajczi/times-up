@@ -1,15 +1,15 @@
 package com.example.timesup.view.turn;
 
-import android.graphics.PorterDuff;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.timesup.R;
 import com.example.timesup.enums.MessageCode;
+import com.example.timesup.enums.RoundNumber;
 import com.example.timesup.model.Game;
+import com.example.timesup.model.UsedCard;
 import com.example.timesup.view.BaseActivity;
 
 import java.util.Timer;
@@ -17,7 +17,8 @@ import java.util.TimerTask;
 
 public class TurnActivity extends BaseActivity {
 
-    Timer timer;
+    private Timer timer;
+    private int i;
 
     @Override
     protected int getLayoutId() {
@@ -26,6 +27,7 @@ public class TurnActivity extends BaseActivity {
 
     @Override
     protected void prepareView(Game game) {
+        i = 30;
         refreshCard();
         this.timer = addStopwatch();
     }
@@ -37,7 +39,7 @@ public class TurnActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        game.getRound().getTurn().getCorrectCards().add(getCard());
+                        game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), true));
                         if(!finishTurnIfNoMoreCards()) {
                             refreshCard();
                         }
@@ -58,11 +60,19 @@ public class TurnActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        game.getRound().getTurn().getIncorrectCards().add(getCard());
+                        game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), false));
                         if(!finishTurnIfNoMoreCards()) {
                             refreshCard();
                         }
                         ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.wrong_button_square_down));
+                        if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
+                            i -= 5;
+                            if (i<=0) {
+                                switchActivity(TurnSummaryActivity.class);
+                            } else {
+                                setLabelText(R.id.turnStopwatch, String.valueOf(i) + "'");
+                            }
+                        }
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
@@ -98,7 +108,6 @@ public class TurnActivity extends BaseActivity {
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask()
         {
-            int i = 30;
             @Override
             public void run()
             {
@@ -107,7 +116,7 @@ public class TurnActivity extends BaseActivity {
                     public void run()
                     {
                         i--;
-                        if (i == 0) {
+                        if (i <= 0) {
                             switchActivity(TurnSummaryActivity.class);
                         }
                         setLabelText(R.id.turnStopwatch, String.valueOf(i) + "'");
@@ -117,6 +126,11 @@ public class TurnActivity extends BaseActivity {
         };
         timer.schedule(timerTask, 0, 1000);
         return timer;
+    }
+
+    @Override
+    protected void changeGameState() {
+        timer.cancel();
     }
 
 }

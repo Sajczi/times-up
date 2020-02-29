@@ -2,7 +2,6 @@ package com.example.timesup.view.round;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.timesup.R;
 import com.example.timesup.enums.MessageCode;
@@ -50,6 +49,7 @@ public class RoundSummaryActivity extends BaseActivity {
             switchActivity(GameSummaryActivity.class);
         } else {
             game.getRound().setRoundNumber(RoundNumber.next(game.getCurrentRoundNumber()));
+            game.shuffle();
             game.getRound().setAvailableCards(game.getCards());
             switchActivity(RoundStartActivity.class);
         }

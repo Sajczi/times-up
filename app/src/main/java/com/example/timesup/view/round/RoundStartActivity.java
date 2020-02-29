@@ -60,8 +60,7 @@ public class RoundStartActivity extends BaseActivity {
             game.getRound().getTurn().setTurnOfTeam(TurnOfTeam.TEAM_A);
         }
         game.getRound().getTurn().setAvailableCards(game.getRound().getAvailableCards());
-        game.getRound().getTurn().setCorrectCards(new ArrayList());
-        game.getRound().getTurn().setIncorrectCards(new ArrayList());
+        game.getRound().getTurn().setUsedCards(new ArrayList());
     }
 
 }

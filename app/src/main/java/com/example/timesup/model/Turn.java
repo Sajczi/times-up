@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.example.timesup.enums.TurnOfTeam;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lombok.Data;
@@ -16,14 +18,17 @@ public class Turn implements Parcelable {
 
     private TurnOfTeam turnOfTeam;
     private List<String> availableCards;
-    private List<String> correctCards;
-    private List<String> incorrectCards;
+    private List<UsedCard> usedCards;
 
     protected Turn(Parcel in) {
         availableCards = in.createStringArrayList();
-        correctCards = in.createStringArrayList();
-        incorrectCards = in.createStringArrayList();
         turnOfTeam = TurnOfTeam.parse(in.readString());
+        usedCards = new ArrayList();
+        in.readTypedList(usedCards, UsedCard.CREATOR);
+    }
+
+    public void shuffle() {
+        Collections.shuffle(availableCards);
     }
 
     public String drawCard() {
@@ -50,8 +55,7 @@ public class Turn implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringList(availableCards);
-        dest.writeStringList(correctCards);
-        dest.writeStringList(incorrectCards);
         dest.writeString(turnOfTeam.getCode().getCode());
+        dest.writeTypedList(usedCards);
     }
 }

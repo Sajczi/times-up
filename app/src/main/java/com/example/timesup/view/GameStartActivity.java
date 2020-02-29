@@ -1,27 +1,18 @@
 package com.example.timesup.view;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.timesup.R;
-import com.example.timesup.controller.GameController;
 import com.example.timesup.enums.RoundNumber;
 import com.example.timesup.model.Game;
 import com.example.timesup.view.round.RoundStartActivity;
 
 public class GameStartActivity extends BaseActivity {
 
-    Button imageButton;
-    GameController gameController;
-
-    private Long cardsAmount = 10L;
+    private Long cardsAmount = 40L;
 
     @Override
     protected int getLayoutId(){
@@ -41,13 +32,11 @@ public class GameStartActivity extends BaseActivity {
 
     @Override
     protected void addListenerOnButton() {
-        imageButton = (Button) findViewById(R.id.startButton);
-        imageButton.setOnClickListener(new OnClickListener() {
+        ((Button) findViewById(R.id.startButton)).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 cardsAmount = Long.valueOf(((TextView) findViewById(R.id.cardsAmount)).getText().toString());
-                gameController = new GameController();
-                game = gameController.initGame(cardsAmount, getApplicationContext());
+                game =  new Game(cardsAmount, getApplicationContext());
                 switchActivity(RoundStartActivity.class);
             }
 

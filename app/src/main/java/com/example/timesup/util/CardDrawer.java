@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class CardDrawer extends ContextWrapper {
 
-    private static final String FILENAME = "hasla.txt";
+    private static final String FILENAME = "cards.txt";
 
     public CardDrawer(Context base) {
         super(base);
@@ -38,6 +38,8 @@ public class CardDrawer extends ContextWrapper {
             }
         });
         Collections.shuffle(cards);
+        Collections.shuffle(cards);
+        Collections.shuffle(cards);
         return cards.subList(0, cardsAmount.intValue());
     }
 
@@ -55,14 +57,22 @@ public class CardDrawer extends ContextWrapper {
     }
 
     private List<Card> readFile() {
+        List<String> cardsText;
+        cardsText = readFileFromDrobbox();
+        if  (cardsText == null || cardsText.isEmpty()) {
+            return readLocalFile();
+        } else {
+            return cardsText.stream().map(txt -> new Card(txt, 0)).collect(Collectors.toList());
+        }
+    }
+
+    private List<Card> readLocalFile() {
         List<Card> result = new ArrayList();
         try {
             String row;
-            StringBuilder stringBuilder = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open(FILENAME)));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(getApplicationContext().getAssets().open(FILENAME),"UTF8"));
             while ((row = reader.readLine()) != null) {
-                String[] rowData = row.split(";");
-                result.add(Card.builder().text(rowData[0]).usedCounter(Integer.valueOf(rowData[1])).build());
+                result.add(Card.builder().text(row).usedCounter(0).build());
             }
             reader.close();
         } catch (IOException e) {
@@ -74,5 +84,11 @@ public class CardDrawer extends ContextWrapper {
 
     private void saveFile(List<Card> updatedCards, String filename) {
         // nie można  nadpisywać assetsów -  trzeba znaleźć workaround
+    }
+
+    private List<String> readFileFromDrobbox() {
+        DropboxFileReader dropboxFileReader = new DropboxFileReader(getApplicationContext());
+        dropboxFileReader.execute();
+        return dropboxFileReader.getResult();
     }
 }

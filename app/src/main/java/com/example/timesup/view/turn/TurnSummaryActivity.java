@@ -1,8 +1,6 @@
 package com.example.timesup.view.turn;
 
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
@@ -13,26 +11,19 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.widget.CompoundButtonCompat;
-
 import com.example.timesup.R;
 import com.example.timesup.enums.MessageCode;
 import com.example.timesup.enums.RoundNumber;
 import com.example.timesup.enums.TurnOfTeam;
 import com.example.timesup.model.Game;
+import com.example.timesup.model.UsedCard;
 import com.example.timesup.view.BaseActivity;
 import com.example.timesup.view.round.RoundSummaryActivity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TurnSummaryActivity extends BaseActivity {
-
-    private Map<String, Boolean> answerMap;
 
     @Override
     protected int getLayoutId() {
@@ -41,44 +32,37 @@ public class TurnSummaryActivity extends BaseActivity {
 
     @Override
     protected void prepareView(Game game){
-        generateAnswerMap();
         refreshAnswers();
         generateTable();
     }
 
-    private void generateAnswerMap() {
-        answerMap = new HashMap();
-        game.getRound().getTurn().getCorrectCards().forEach(card -> answerMap.put(card, Boolean.TRUE));
-        game.getRound().getTurn().getIncorrectCards().forEach(card -> answerMap.put(card, Boolean.FALSE));
-    }
-
     private void generateTable() {
         TableLayout tableView = (TableLayout) findViewById(R.id.turnSummaryTableLayout);
-        for (Map.Entry card : answerMap.entrySet()) {
+        for (UsedCard usedCard : game.getRound().getTurn().getUsedCards()) {
             TableRow row = new TableRow(this);
-            addCardTextView(row, card);
-            addCheckBox(row, card);
+            addCardTextView(row, usedCard);
+            addCheckBox(row, usedCard);
             tableView.addView(row);
         }
     }
 
-    private void addCheckBox(TableRow row, Map.Entry card) {
+    private void addCheckBox(TableRow row, UsedCard usedCard) {
         CheckBox checkBox = new CheckBox(this);
-        checkBox.setChecked((boolean) card.getValue());
+        checkBox.setChecked(usedCard.isCorrectAnswer());
         checkBox.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                answerMap.put((String) card.getKey(), !answerMap.get(card.getKey()));
+                usedCard.setCorrectAnswer(isChecked);
                 refreshAnswers();
             }
         });
         row.addView(checkBox);
     }
 
-    private void addCardTextView(TableRow row, Map.Entry card) {
+    private void addCardTextView(TableRow row, UsedCard usedCard) {
         TextView cardTextView = new TextView(this);
-        cardTextView.setText(card.getKey().toString());
+        cardTextView.setText(usedCard.getText());
         cardTextView.setTextSize(16);
         cardTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
         cardTextView.setTypeface(Typeface.create("casual", Typeface.BOLD));
@@ -87,8 +71,8 @@ public class TurnSummaryActivity extends BaseActivity {
     }
 
     private void refreshAnswers() {
-        setLabelText(R.id.turnSummaryCorrectCards, MessageCode.TURN_SUMMARY_CORRECT_CARDS, answerMap.values().stream().filter(v -> v).count());
-        setLabelText(R.id.turnSummaryIncorrectCards, MessageCode.TURN_SUMMARY_INCORRECT_CARDS, answerMap.values().stream().filter(v -> !v).count());
+        setLabelText(R.id.turnSummaryCorrectCards, MessageCode.TURN_SUMMARY_CORRECT_CARDS, game.getRound().getTurn().getUsedCards().stream().filter(card -> card.isCorrectAnswer()).count());
+        setLabelText(R.id.turnSummaryIncorrectCards, MessageCode.TURN_SUMMARY_INCORRECT_CARDS, game.getRound().getTurn().getUsedCards().stream().filter(card -> !card.isCorrectAnswer()).count());
     }
 
     @Override
@@ -102,7 +86,7 @@ public class TurnSummaryActivity extends BaseActivity {
     }
 
     private void startTurn() {
-        List<String> correctCards = answerMap.entrySet().stream().filter(t -> t.getValue()).map(t -> t.getKey()).collect(Collectors.toList());
+        List<String> correctCards = game.getRound().getTurn().getUsedCards().stream().filter(card -> card.isCorrectAnswer()).map(card -> card.getText()).collect(Collectors.toList());
         int score = correctCards.size();
         game.getRound().getAvailableCards().removeAll(correctCards);
         if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {

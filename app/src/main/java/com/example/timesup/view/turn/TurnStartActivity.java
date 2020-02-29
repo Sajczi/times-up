@@ -38,7 +38,7 @@ public class TurnStartActivity extends BaseActivity {
     @Override
     protected void changeGameState() {
         game.getRound().getTurn().setAvailableCards(game.getRound().getAvailableCards());
-        game.getRound().getTurn().setCorrectCards(new ArrayList());
-        game.getRound().getTurn().setIncorrectCards(new ArrayList());
+        game.getRound().getTurn().shuffle();
+        game.getRound().getTurn().setUsedCards(new ArrayList());
     }
 }
