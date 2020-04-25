@@ -21,7 +21,7 @@ class DropboxFileReader extends AsyncTask<String, Void, List<String>> {
     List<String> result;
 
     private static final String FILENAME = "cards.txt";
-    private static final String ACCESS_TOKEN = "jHGdwQHaJmAAAAAAAAAAERuc56r6YRiWnj68YZgKj5hKzy2RgJwhQBnfrd8zLFG0";
+    private static final String ACCESS_TOKEN = "jHGdwQHaJmAAAAAAAAAAErqOyJkkFM0X9-QJYL4qkIszUwzy_HCS8AfTz0eMXjRC";
 
     public DropboxFileReader(Context context) {
         super();

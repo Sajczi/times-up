@@ -10,6 +10,7 @@ import com.example.timesup.util.CardDrawer;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import lombok.Data;
 
@@ -54,7 +55,7 @@ public class Game implements Parcelable {
     };
 
     private void drawCards(Long cardsAmount, Context context) {
-        this.cards =  new CardDrawer(context).drawCards(cardsAmount);
+        this.cards = new CardDrawer(context).drawCards(cardsAmount);
     }
 
     public void shuffle() {
@@ -71,5 +72,26 @@ public class Game implements Parcelable {
         dest.writeStringList(this.cards);
         dest.writeParcelable(this.round, flags);
         dest.writeParcelable(this.score, flags);
+    }
+
+    public void replaceCard(UsedCard card, Context context) {
+        deleteCard(card);
+        drawNewCard(context);
+    }
+
+    private void deleteCard(UsedCard card) {
+        round.getTurn().getUsedCards().remove(card);
+        round.getAvailableCards().remove(card.getText());
+        cards.remove(card.getText());
+    }
+
+    private void drawNewCard(Context context) {
+        Optional<String> newCard = Optional.empty();
+        while (!newCard.isPresent()) {
+            List<String> newCards = new CardDrawer(context).drawCards(10L);
+            newCard = newCards.stream().filter(c -> !cards.contains(c)).findFirst();
+        };
+        round.getAvailableCards().add(newCard.get());
+        cards.add(newCard.get());
     }
 }

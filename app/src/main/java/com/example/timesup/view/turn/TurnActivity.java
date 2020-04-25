@@ -28,8 +28,8 @@ public class TurnActivity extends BaseActivity {
     @Override
     protected void prepareView(Game game) {
         i = 30;
-        refreshCard();
         this.timer = addStopwatch();
+        refreshCard();
     }
 
     @Override
@@ -39,11 +39,11 @@ public class TurnActivity extends BaseActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
+                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.ok_button_square_down));
                         game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), true));
                         if(!finishTurnIfNoMoreCards()) {
                             refreshCard();
                         }
-                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.ok_button_square_down));
                         break;
                     }
                     case MotionEvent.ACTION_CANCEL:
@@ -61,10 +61,10 @@ public class TurnActivity extends BaseActivity {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
                         game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), false));
+                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.wrong_button_square_down));
                         if(!finishTurnIfNoMoreCards()) {
                             refreshCard();
                         }
-                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.wrong_button_square_down));
                         if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
                             i -= 5;
                             if (i<=0) {
@@ -117,6 +117,7 @@ public class TurnActivity extends BaseActivity {
                     {
                         i--;
                         if (i <= 0) {
+                            game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), false));
                             switchActivity(TurnSummaryActivity.class);
                         }
                         setLabelText(R.id.turnStopwatch, String.valueOf(i) + "'");
