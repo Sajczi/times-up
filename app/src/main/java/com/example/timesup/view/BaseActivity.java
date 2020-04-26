@@ -5,60 +5,48 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.timesup.enums.MessageCode;
-import com.example.timesup.enums.RoundNumber;
-import com.example.timesup.model.Game;
 import com.example.timesup.util.MessageSourceAccessor;
+import com.example.timesup.viewmodel.BaseViewModel;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity<T extends BaseViewModel> extends AppCompatActivity {
 
-    protected Game game;
+    protected T viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
-        if (fetchGameState()) {
-            game = getGameState();
-        }
-        prepareView(game);
+        initViewModel();
+        prepareView();
         addListenerOnButton();
     }
 
-    protected boolean fetchGameState() {
-        return true;
+    private void initViewModel() {
+        viewModel =  (T) ViewModelProviders.of(this).get(getViewModelClass());
+    }
+
+    protected Class getViewModelClass() {
+        throw new UnsupportedOperationException("Define ViewModel class");
     }
 
     protected void addListenerOnButton() {
     }
 
-    protected void prepareView(Game game) {
+    protected void prepareView() {
     }
 
     protected int getLayoutId() {
         throw new UnsupportedOperationException("Layout ID not defined");
     }
 
-    protected Game getGameState() {
-        Bundle bundle = getIntent().getExtras();
-        return (Game) bundle.get("gameState");
-    }
-
-    protected RoundNumber getRoundNumber(){
-        Bundle bundle  = getIntent().getExtras();
-        return (RoundNumber) bundle.get("roundNumber");
-    }
-
     protected <T extends BaseActivity> void switchActivity(Class<T> clazz) {
         Intent intent = new Intent(this, clazz).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         this.overridePendingTransition(0, 0);
-        changeGameState();
-        intent.putExtra("gameState", game);
+        viewModel.changeGameState();
         startActivity(intent);
-    }
-
-    protected void changeGameState() {
     }
 
     protected String getLabelText(MessageCode messageCode) {

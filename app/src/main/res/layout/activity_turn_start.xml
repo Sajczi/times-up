@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E7D27F"
+    android:background="@color/colorBackground"
     tools:context=".view.turn.TurnStartActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -41,7 +41,7 @@
         android:id="@+id/turnStartTeamPlaying"
         android:layout_width="155dp"
         android:layout_height="88dp"
-        android:fontFamily="casual"
+        android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
         android:text="TextView"
         android:textSize="32sp"
@@ -54,7 +54,7 @@
         android:id="@+id/turnStartNowPlaying"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="casual"
+        android:fontFamily="sans-serif"
         android:gravity="center_horizontal|center_vertical"
         android:text="TextView"
         android:textSize="22sp"

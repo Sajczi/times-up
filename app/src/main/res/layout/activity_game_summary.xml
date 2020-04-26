@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.GameSummaryActivity">
+    tools:context=".view.game.GameSummaryActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E7D27F"
+        android:background="@color/colorBackground"
         tools:context=".view.round.RoundStartActivity">
 
         <androidx.constraintlayout.widget.Guideline
@@ -51,7 +51,7 @@
             android:id="@+id/gameSummaryWinningTeam"
             android:layout_width="345dp"
             android:layout_height="52dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="center_horizontal"
             android:text="TextView"
             android:textSize="22sp"
@@ -64,18 +64,18 @@
             android:id="@+id/gameSummaryTeamAScore"
             android:layout_width="251dp"
             android:layout_height="43dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="left"
             android:text="TextView"
             android:textSize="22sp"
             app:layout_constraintLeft_toLeftOf="@+id/gameSummaryGuidelineVertical1"
-            app:layout_constraintTop_toTopOf="@+id/gameSummaryGuidelineHorizontal1"/>
+            app:layout_constraintTop_toTopOf="@+id/gameSummaryGuidelineHorizontal1" />
 
         <TextView
             android:id="@+id/gameSummaryTeamBScore"
             android:layout_width="251dp"
             android:layout_height="43dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="left"
             android:text="TextView"
             android:textSize="22sp"

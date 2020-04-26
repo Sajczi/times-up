@@ -104,7 +104,6 @@ public class WikiInformationDialog extends Dialog implements
         wikiRequestHandler.getWikiInformation(title, findViewById(R.id.wiki_dialog_text));
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

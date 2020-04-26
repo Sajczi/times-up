@@ -22,10 +22,14 @@ public class Game implements Parcelable {
     private Round round;
     private Score score;
 
-    public Game(Long cardsAmount, Context context) {
+    private Context context;
+
+    public Game(long cardsAmount, Context context) {
         drawCards(cardsAmount, context);
         round = new Round(cards, RoundNumber.ROUND_ONE);
+        round.getTurn().setTurnOfTeam(TurnOfTeam.TEAM_A);
         score = new Score();
+        this.context = context;
     }
 
     protected Game(Parcel in) {
@@ -74,9 +78,9 @@ public class Game implements Parcelable {
         dest.writeParcelable(this.score, flags);
     }
 
-    public void replaceCard(UsedCard card, Context context) {
+    public void replaceCard(UsedCard card) {
         deleteCard(card);
-        drawNewCard(context);
+        drawNewCard();
     }
 
     private void deleteCard(UsedCard card) {
@@ -85,7 +89,7 @@ public class Game implements Parcelable {
         cards.remove(card.getText());
     }
 
-    private void drawNewCard(Context context) {
+    private void drawNewCard() {
         Optional<String> newCard = Optional.empty();
         while (!newCard.isPresent()) {
             List<String> newCards = new CardDrawer(context).drawCards(10L);

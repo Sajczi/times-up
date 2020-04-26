@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#E7D27F"
+        android:background="@color/colorBackground"
         tools:context=".view.turn.turnActivity"
         tools:layout_editor_absoluteX="-84dp"
         tools:layout_editor_absoluteY="33dp">
@@ -60,7 +60,7 @@
             android:id="@+id/turnStopwatch"
             android:layout_width="150dp"
             android:layout_height="100dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="center_horizontal|center_vertical"
             android:text="TextView"
             android:textSize="22sp"
@@ -69,10 +69,10 @@
             app:layout_constraintLeft_toLeftOf="@+id/turnGuidelineVertical3" />
 
         <TextView
-            android:id="@+id/turnTeamPlaying"
+            android:id="@+id/turnCard"
             android:layout_width="339dp"
             android:layout_height="149dp"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="center_horizontal|center_vertical"
             android:text="TextView"
             android:textSize="32sp"
@@ -85,7 +85,7 @@
             android:id="@+id/turnCardsLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:gravity="left"
             android:text="TextView"
             app:layout_constraintLeft_toLeftOf="@+id/turnGuidelineVertical1"

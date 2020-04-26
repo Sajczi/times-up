@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -14,22 +13,20 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.timesup.R;
 import com.example.timesup.enums.MessageCode;
-import com.example.timesup.enums.RoundNumber;
-import com.example.timesup.enums.TurnOfTeam;
-import com.example.timesup.model.Game;
 import com.example.timesup.model.UsedCard;
 import com.example.timesup.util.ComponentDimensionUtil;
 import com.example.timesup.view.BaseActivity;
 import com.example.timesup.view.round.RoundSummaryActivity;
+import com.example.timesup.viewmodel.turn.TurnResultRowViewModel;
+import com.example.timesup.viewmodel.turn.TurnSummaryViewModel;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class TurnSummaryActivity extends BaseActivity {
+public class TurnSummaryActivity extends BaseActivity<TurnSummaryViewModel> {
 
     @Override
     protected int getLayoutId() {
@@ -39,7 +36,12 @@ public class TurnSummaryActivity extends BaseActivity {
     private ComponentDimensionUtil componentDimensionUtil;
 
     @Override
-    protected void prepareView(Game game) {
+    protected Class getViewModelClass() {
+        return TurnSummaryViewModel.class;
+    }
+
+    @Override
+    protected void prepareView() {
         this.componentDimensionUtil = new ComponentDimensionUtil(getWindowManager());
         refreshAnswers();
         generateTable();
@@ -47,14 +49,15 @@ public class TurnSummaryActivity extends BaseActivity {
 
     private void generateTable() {
         TableLayout tableView = (TableLayout) findViewById(R.id.turnSummaryTableLayout);
-        for (UsedCard usedCard : game.getRound().getTurn().getUsedCards()) {
+        for (UsedCard usedCard : viewModel.getTurnCards()) {
+            TurnResultRowViewModel viewModel = ViewModelProviders.of(this).get(TurnResultRowViewModel.class);
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1f));
             addCardTextView(row, usedCard);
             addCheckBox(row, usedCard);
-            if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
-                addDeleteCardButton(row, usedCard);
-            } else if (RoundNumber.ROUND_THREE.equals(game.getCurrentRoundNumber())) {
+            if (viewModel.isFirstRound()) {
+                addDeleteCardButton(row, usedCard, viewModel);
+            } else if (viewModel.isThirdRound()) {
                 addInfoButton(row, usedCard);
             }
             tableView.addView(row);
@@ -66,7 +69,7 @@ public class TurnSummaryActivity extends BaseActivity {
         cardTextView.setText(usedCard.getText());
         cardTextView.setTextSize(16);
         cardTextView.setGravity(Gravity.LEFT | Gravity.CENTER_HORIZONTAL);
-        cardTextView.setTypeface(Typeface.create("casual", Typeface.BOLD));
+        cardTextView.setTypeface(Typeface.create("sans-serif", Typeface.BOLD));
         cardTextView.setLayoutParams(new TableRow.LayoutParams(0, componentDimensionUtil.getScreenHeight() * 1/20, 0.5f));
         row.addView(cardTextView);
     }
@@ -100,9 +103,7 @@ public class TurnSummaryActivity extends BaseActivity {
         row.addView(infoButton);
     }
 
-    private void addDeleteCardButton(TableRow row, UsedCard usedCard) {
-        Activity a = this;
-        Game g = game;
+    private void addDeleteCardButton(TableRow row, UsedCard usedCard, TurnResultRowViewModel viewModel) {
         ImageButton deleteCardButton = new ImageButton(this);
         deleteCardButton.setImageResource(R.drawable.delete_card_button);
         formatThirdColumnButton(deleteCardButton);
@@ -115,7 +116,7 @@ public class TurnSummaryActivity extends BaseActivity {
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton("TAK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                g.replaceCard(usedCard, TurnSummaryActivity.this);
+                                viewModel.replaceCard(usedCard);
                                 refreshTable(usedCard);
                             }})
                         .setNegativeButton("NIE", new DialogInterface.OnClickListener() {
@@ -153,13 +154,25 @@ public class TurnSummaryActivity extends BaseActivity {
     }
 
     private void refreshAnswers() {
-        setLabelText(R.id.turnSummaryCorrectCards, MessageCode.TURN_SUMMARY_CORRECT_CARDS, game.getRound().getTurn().getUsedCards().stream().filter(card -> card.isCorrectAnswer()).count());
-        setLabelText(R.id.turnSummaryIncorrectCards, MessageCode.TURN_SUMMARY_INCORRECT_CARDS, game.getRound().getTurn().getUsedCards().stream().filter(card -> !card.isCorrectAnswer()).count());
+        viewModel.refreshAnswers();
+        viewModel.getCorrectAnswersObservable().observe(this, new Observer<Long>() {
+            @Override
+            public void onChanged(Long count) {
+                setLabelText(R.id.turnSummaryCorrectCards, MessageCode.TURN_SUMMARY_CORRECT_CARDS, count);
+            }
+        });
+
+        viewModel.getIncorrectAnswersObservable().observe(this, new Observer<Long>() {
+            @Override
+            public void onChanged(Long count) {
+                setLabelText(R.id.turnSummaryIncorrectCards, MessageCode.TURN_SUMMARY_INCORRECT_CARDS, count);
+            }
+        });
     }
 
     @Override
     protected void addListenerOnButton() {
-        ((Button) findViewById(R.id.turnSummaryOkButton)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.turnSummaryOkButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 startTurn();
@@ -168,37 +181,16 @@ public class TurnSummaryActivity extends BaseActivity {
     }
 
     private void startTurn() {
-        List<String> correctCards = game.getRound().getTurn().getUsedCards().stream().filter(card -> card.isCorrectAnswer()).map(card -> card.getText()).collect(Collectors.toList());
-        int score = correctCards.size();
-        game.getRound().getAvailableCards().removeAll(correctCards);
-        if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
-            if (TurnOfTeam.TEAM_A.equals(game.getCurrentTurnOfTeam())) {
-                game.getScore().incrementTeamARoundOneScore(score);
-            } else {
-                game.getScore().incrementTeamBRoundOneScore(score);
-            }
-        } else if (RoundNumber.ROUND_TWO.equals(game.getCurrentRoundNumber())) {
-            if (TurnOfTeam.TEAM_A.equals(game.getCurrentTurnOfTeam())) {
-                game.getScore().incrementTeamARoundTwoScore(score);
-            } else {
-                game.getScore().incrementTeamBRoundTwoScore(score);
-            }
-        } else if (RoundNumber.ROUND_THREE.equals(game.getCurrentRoundNumber())) {
-            if (TurnOfTeam.TEAM_A.equals(game.getCurrentTurnOfTeam())) {
-                game.getScore().incrementTeamARoundThreeScore(score);
-            } else {
-                game.getScore().incrementTeamBRoundThreeScore(score);
-            }
-        };
-        passCards();
-        if (game.getRound().getAvailableCards().isEmpty()){
+        viewModel.sumUpScores();
+        if (anyCardsLeft()) {
             switchActivity(RoundSummaryActivity.class);
         } else {
             switchActivity(TurnStartActivity.class);
         }
     }
 
-    private void passCards() {
-        game.getRound().getTurn().setTurnOfTeam(TurnOfTeam.next(game.getCurrentTurnOfTeam()));
+    private boolean anyCardsLeft() {
+        return viewModel.anyCardsLeft();
     }
+
 }

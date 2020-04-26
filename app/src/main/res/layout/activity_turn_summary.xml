@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E7D27F"
+    android:background="@color/colorBackground"
     tools:context=".view.turn.TurnSummaryActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,7 +73,7 @@
             android:id="@+id/turnSummaryCorrectCards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:text="TextView"
             android:textSize="22sp"
             app:layout_constraintLeft_toLeftOf="@+id/turnSummaryGuidelineVertical1"
@@ -83,7 +83,7 @@
             android:id="@+id/turnSummaryIncorrectCards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="casual"
+            android:fontFamily="sans-serif"
             android:text="TextView"
             android:textSize="22sp"
             app:layout_constraintLeft_toLeftOf="@+id/turnSummaryGuidelineVertical1"

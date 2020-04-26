@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.example.timesup.enums.RoundNumber;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -15,11 +16,6 @@ public class Round implements Parcelable {
     private RoundNumber roundNumber;
     private List<String> availableCards;
     private Turn turn;
-
-    public Round(RoundNumber roundNumber, List<String> cards) {
-        this.roundNumber =  roundNumber;
-        this.availableCards = cards;
-    }
 
     protected Round(Parcel in) {
         turn = in.readParcelable(Turn.class.getClassLoader());
@@ -40,8 +36,9 @@ public class Round implements Parcelable {
     };
 
     public Round(List<String> cards, RoundNumber roundNumber) {
-        this.availableCards = cards;
+        this.availableCards = new ArrayList(cards);
         this.roundNumber = roundNumber;
+        this.turn = new Turn();
     }
 
     @Override

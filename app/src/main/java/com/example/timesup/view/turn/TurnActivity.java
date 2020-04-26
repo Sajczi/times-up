@@ -5,20 +5,14 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.lifecycle.Observer;
+
 import com.example.timesup.R;
 import com.example.timesup.enums.MessageCode;
-import com.example.timesup.enums.RoundNumber;
-import com.example.timesup.model.Game;
-import com.example.timesup.model.UsedCard;
 import com.example.timesup.view.BaseActivity;
+import com.example.timesup.viewmodel.turn.TurnViewModel;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class TurnActivity extends BaseActivity {
-
-    private Timer timer;
-    private int i;
+public class TurnActivity extends BaseActivity<TurnViewModel> {
 
     @Override
     protected int getLayoutId() {
@@ -26,10 +20,45 @@ public class TurnActivity extends BaseActivity {
     }
 
     @Override
-    protected void prepareView(Game game) {
-        i = 30;
-        this.timer = addStopwatch();
-        refreshCard();
+    protected Class getViewModelClass() {
+        return TurnViewModel.class;
+    }
+
+    @Override
+    protected void prepareView() {
+        initObservables();
+    }
+
+    private void initObservables() {
+        viewModel.getTimeObservable().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer timeLeft) {
+                setLabelText(R.id.turnStopwatch, new StringBuilder().append(timeLeft.toString()).append("'").toString());
+            }
+        });
+
+        viewModel.getCardsLeftObservable().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer count) {
+                setLabelText(R.id.turnCardsLeft, MessageCode.TURN_CARDS_LEFT, count);
+            }
+        });
+
+        viewModel.getCardObservable().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String card) {
+                setLabelText(R.id.turnCard, card);
+            }
+        });
+
+        viewModel.getTimesUpObservable().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean shouldFinishTurn) {
+                if (shouldFinishTurn) {
+                    switchActivity(TurnSummaryActivity.class);
+                }
+            }
+        });
     }
 
     @Override
@@ -37,20 +66,9 @@ public class TurnActivity extends BaseActivity {
         (findViewById(R.id.turnOkButton)).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.ok_button_square_down));
-                        game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), true));
-                        if(!finishTurnIfNoMoreCards()) {
-                            refreshCard();
-                        }
-                        break;
-                    }
-                    case MotionEvent.ACTION_CANCEL:
-                    case MotionEvent.ACTION_UP: {
-                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.ok_button_square));
-                        break;
-                    }
+                renderButton(event.getAction(), v.getId());
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    viewModel.handleCorrectAnswer(getCard());
                 }
                 return true;
             }
@@ -58,80 +76,37 @@ public class TurnActivity extends BaseActivity {
         (findViewById(R.id.turnWrongButton)).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), false));
-                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.wrong_button_square_down));
-                        if(!finishTurnIfNoMoreCards()) {
-                            refreshCard();
-                        }
-                        if (RoundNumber.ROUND_ONE.equals(game.getCurrentRoundNumber())) {
-                            i -= 5;
-                            if (i<=0) {
-                                switchActivity(TurnSummaryActivity.class);
-                            } else {
-                                setLabelText(R.id.turnStopwatch, String.valueOf(i) + "'");
-                            }
-                        }
-                        break;
-                    }
-                    case MotionEvent.ACTION_CANCEL:
-                    case MotionEvent.ACTION_UP: {
-                        ((ImageButton) v).setImageDrawable(getApplicationContext().getDrawable(R.drawable.wrong_button_square));
-                        break;
-                    }
+                renderButton(event.getAction(), v.getId());
+                if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                    viewModel.handleIncorrectAnswer(getCard());
                 }
                 return true;
             }
         });
     }
 
-    private void refreshCard(){
-        setLabelText(R.id.turnTeamPlaying, game.getRound().getTurn().drawCard());
-        setLabelText(R.id.turnCardsLeft, MessageCode.TURN_CARDS_LEFT, game.getRound().getTurn().getAvailableCards().size());
+    private void renderButton(int action, int viewId) {
+        if (viewId == R.id.turnOkButton) {
+            if (action == MotionEvent.ACTION_DOWN) {
+                setButtonImage(viewId, R.drawable.ok_button_square_down);
+            } else if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP){
+                setButtonImage(viewId, R.drawable.ok_button_square);
+            }
+        } else if (viewId == R.id.turnWrongButton) {
+            if (action == MotionEvent.ACTION_DOWN) {
+                setButtonImage(viewId, R.drawable.wrong_button_square_down);
+            } else if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP){
+                setButtonImage(viewId, R.drawable.wrong_button_square);
+            }
+        }
     }
 
-    private boolean finishTurnIfNoMoreCards() {
-        if (game.getRound().getTurn().getAvailableCards().isEmpty()) {
-            timer.cancel();
-            switchActivity(TurnSummaryActivity.class);
-            return true;
-        }
-        return false;
+    private void setButtonImage(int viewId, int drawableId) {
+        ((ImageButton) findViewById(viewId)).setImageDrawable(getApplicationContext().getDrawable(drawableId));
     }
 
     private String getCard() {
-        return ((TextView)findViewById(R.id.turnTeamPlaying)).getText().toString();
-    }
-
-    private Timer addStopwatch() {
-        Timer timer = new Timer();
-        TimerTask timerTask = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        i--;
-                        if (i <= 0) {
-                            game.getRound().getTurn().getUsedCards().add(new UsedCard(getCard(), false));
-                            switchActivity(TurnSummaryActivity.class);
-                        }
-                        setLabelText(R.id.turnStopwatch, String.valueOf(i) + "'");
-                    }
-                });
-            }
-        };
-        timer.schedule(timerTask, 0, 1000);
-        return timer;
-    }
-
-    @Override
-    protected void changeGameState() {
-        timer.cancel();
+        return ((TextView) findViewById(R.id.turnCard)).getText().toString();
     }
 
 }

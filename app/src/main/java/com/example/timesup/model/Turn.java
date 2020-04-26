@@ -19,6 +19,7 @@ public class Turn implements Parcelable {
     private TurnOfTeam turnOfTeam;
     private List<String> availableCards;
     private List<UsedCard> usedCards;
+    private UsedCard currentCard;
 
     protected Turn(Parcel in) {
         availableCards = in.createStringArrayList();
@@ -31,8 +32,9 @@ public class Turn implements Parcelable {
         Collections.shuffle(availableCards);
     }
 
-    public String drawCard() {
-        return availableCards.remove(0);
+    public UsedCard drawCard() {
+        currentCard = new UsedCard(availableCards.remove(0), false);
+        return currentCard;
     }
 
     public static final Creator<Turn> CREATOR = new Creator<Turn>() {
